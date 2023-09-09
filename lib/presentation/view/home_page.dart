@@ -31,10 +31,15 @@ class _HomePageState extends State<HomePage> {
             children: [
               Row(
                 children: [
-                  ClipOval(
-                    child: Image.network(
-                      "https://github.com/ManasMalla.png",
-                      width: 54,
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).pushNamed("/profile");
+                    },
+                    child: ClipOval(
+                      child: Image.network(
+                        "https://github.com/ManasMalla.png",
+                        width: 54,
+                      ),
                     ),
                   ),
                   const SizedBox(
