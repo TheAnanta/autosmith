@@ -1,0 +1,1 @@
+enum AutomobileType { twoWheeler, fourWheeler }
