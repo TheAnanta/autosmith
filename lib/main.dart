@@ -3,7 +3,9 @@ import 'package:autosmith/presentation/view/login_screen.dart';
 import 'package:autosmith/presentation/view/onboarding_page.dart';
 import 'package:autosmith/presentation/view/otp_screen.dart';
 import 'package:autosmith/presentation/view/registration_page.dart';
+import 'package:autosmith/presentation/view/search_mechanic_page.dart';
 import 'package:autosmith/presentation/view/splash_page.dart';
+import 'package:autosmith/presentation/view/success_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'color_schemes.g.dart';
@@ -38,6 +40,8 @@ class MyApp extends StatelessWidget {
         "/otp-page": (context) => const OTPPage(),
         "/registration": (context) => const RegistrationPage(),
         "/home": (context) => const HomePage(),
+        '/search-mechanic': (context) => const SearchMechanicPage(),
+        '/success': (context) => const SuccessPage(),
       },
     );
   }

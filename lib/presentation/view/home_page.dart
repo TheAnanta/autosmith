@@ -1,4 +1,5 @@
 import 'package:autosmith/data/datasources/automobile_issues.dart';
+import 'package:autosmith/domain/entities/automobile_issues.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -178,13 +179,22 @@ class _HomePageState extends State<HomePage> {
                 height: 72,
               ),
               // const Spacer(),
-              BottomCallToAction(onWheelerChange: (AutomobileType type) {
-                automobileIssues = type == AutomobileType.fourWheeler
-                    ? fourWheelerIssues
-                    : twoWheelerIssues;
-                automobileType = type;
-                setState(() {});
-              }),
+              BottomCallToAction(
+                onWheelerChange: (AutomobileType type) {
+                  automobileIssues = type == AutomobileType.fourWheeler
+                      ? fourWheelerIssues
+                      : twoWheelerIssues;
+                  automobileType = type;
+                  setState(() {});
+                },
+                automobileIssue: selectedIssueIndex == 0
+                    ? const AutomobileIssue(
+                        title: "Out of petrol",
+                        subtitle: "Did your car just run out of petrol?",
+                        icon: Icons.water_drop_rounded,
+                        credits: 2)
+                    : automobileIssues[selectedIssueIndex - 1],
+              ),
             ],
           ),
         ),

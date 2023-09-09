@@ -1,3 +1,4 @@
+import 'package:autosmith/domain/entities/automobile_issues.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
@@ -7,8 +8,12 @@ import 'package:location/location.dart' as location_package;
 import '../../domain/enums/automobile_type.dart';
 
 class BottomCallToAction extends StatefulWidget {
+  final AutomobileIssue automobileIssue;
   final Function(AutomobileType) onWheelerChange;
-  const BottomCallToAction({super.key, required this.onWheelerChange});
+  const BottomCallToAction(
+      {super.key,
+      required this.onWheelerChange,
+      required this.automobileIssue});
 
   @override
   State<BottomCallToAction> createState() => _BottomCallToActionState();
@@ -179,7 +184,10 @@ class _BottomCallToActionState extends State<BottomCallToAction> {
         MaterialButton(
           height: 48,
           elevation: 0,
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pushNamed("/search-mechanic",
+                arguments: widget.automobileIssue);
+          },
           color: Theme.of(context).colorScheme.primary,
           minWidth: double.infinity,
           shape: RoundedRectangleBorder(
