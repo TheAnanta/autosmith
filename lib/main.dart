@@ -1,3 +1,4 @@
+import 'package:autosmith/injector.dart';
 import 'package:autosmith/presentation/view/home_page.dart';
 import 'package:autosmith/presentation/view/login_screen.dart';
 import 'package:autosmith/presentation/view/onboarding_page.dart';
@@ -6,16 +7,25 @@ import 'package:autosmith/presentation/view/profile_page.dart';
 import 'package:autosmith/presentation/view/registration_page.dart';
 import 'package:autosmith/presentation/view/search_mechanic_page.dart';
 import 'package:autosmith/presentation/view/splash_page.dart';
-import 'package:autosmith/presentation/view/success_page.dart';
 import 'package:autosmith/presentation/view/wallet_page.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'color_schemes.g.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-  runApp(const MyApp());
+  Firebase.initializeApp();
+  runApp(MultiBlocProvider(
+    providers: [
+      BlocProvider(
+        create: (context) => Injector.splashPageBloc,
+      )
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -34,7 +44,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
           colorScheme: darkColorScheme,
           fontFamily: "Gilroy"),
-      initialRoute: "/home",
+      initialRoute: "/splash",
       routes: {
         "/splash": (context) => const SplashPage(),
         "/onboarding": (context) => const OnboardingPage(),
@@ -53,7 +63,6 @@ class MyApp extends StatelessWidget {
 
 // class Home extends StatelessWidget {
 //   const Home({Key? key}) : super(key: key);
-
 //   // This widget is the root of your application.
 //   @override
 //   Widget build(BuildContext context) {

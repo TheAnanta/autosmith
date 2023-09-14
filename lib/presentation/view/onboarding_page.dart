@@ -1,4 +1,10 @@
+import 'package:autosmith/presentation/bloc/onboarding/onboarding_bloc.dart';
+import 'package:autosmith/presentation/bloc/onboarding/onboarding_event.dart';
+import 'package:autosmith/presentation/bloc/onboarding/onboarding_state.dart';
+import 'package:autosmith/presentation/view/home_page.dart';
+import 'package:autosmith/presentation/view/registration_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 class OnboardingData {
@@ -35,21 +41,43 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: OnboardingTemplate(
-        index,
-        title: data[index].title,
-        image: data[index].imagePath,
-        onNext: () {
-          if (index >= 2) {
-            Navigator.of(context).pushReplacementNamed("/login");
-          } else {
-            index++;
-            setState(() {});
-          }
-        },
-      ),
-    );
+    context.read<OnboardingBloc>().add(OnAppInit());
+    return BlocBuilder<OnboardingBloc, OnboardingState>(
+        builder: (context, state) {
+      if (state is OnboardingUserLoggedOut) {
+        return Scaffold(
+          body: OnboardingTemplate(
+            index,
+            title: data[index].title,
+            image: data[index].imagePath,
+            onNext: () {
+              if (index >= 2) {
+                Navigator.of(context).pushReplacementNamed("/login");
+              } else {
+                index++;
+                setState(() {});
+              }
+            },
+          ),
+        );
+      } else if (state is OnboardingUserAvailable) {
+        return const HomePage();
+      } else if (state is OnboardingNewUser) {
+        return const RegistrationPage();
+      } else if (state is OnboardingLoading) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      } else if (state is OnboardingError) {
+        return Center(
+          child: Text(state.error),
+        );
+      } else {
+        return Center(
+          child: Text('State error.'),
+        );
+      }
+    });
   }
 }
 
@@ -101,7 +129,7 @@ class OnboardingTemplate extends StatelessWidget {
                 children: [
                   FilledButton(
                     onPressed: () => onNext(),
-                    child: Text(index < 2 ? "learn more" : "get started"),
+                    child: Text(index < 2 ? "Learn More" : "Login"),
                   ),
                   const SizedBox(
                     width: 16,
