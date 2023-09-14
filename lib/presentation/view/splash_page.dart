@@ -1,4 +1,5 @@
 import 'package:autosmith/injector.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,8 +12,11 @@ class SplashPage extends StatelessWidget {
     Future.delayed(
       const Duration(seconds: 2),
       () {
-        Injector.firebaseAuth.signOut();
-        Navigator.of(context).pushReplacementNamed('/onboarding');
+        if (Injector.firebaseAuthUseCase.isLoggedIn) {
+          Navigator.of(context).pushReplacementNamed('/home');
+        } else {
+          Navigator.of(context).pushReplacementNamed('/onboarding');
+        }
       },
     );
     return Scaffold(

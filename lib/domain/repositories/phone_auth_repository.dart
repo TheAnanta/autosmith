@@ -7,6 +7,7 @@ import '../../data/failure.dart';
 abstract class PhoneAuthRepository {
   Future<Either<Failure, Either<FirebaseCodeResponse, AuthCredential>>> signIn(
     String phoneNumber,
+    int? resendToken,
   );
   Future<AuthCredential> verifyOTP(
     String verificationId,

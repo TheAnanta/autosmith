@@ -28,7 +28,8 @@ class OnSignInWithPassword extends AuthEvent {
 
 class OnSignInWithPhone extends AuthEvent {
   final String phoneNumber;
-  const OnSignInWithPhone({required this.phoneNumber});
+  final int? resendToken;
+  const OnSignInWithPhone({required this.phoneNumber, this.resendToken});
   @override
   List<Object?> get props => [phoneNumber];
 }
@@ -40,3 +41,5 @@ class OnVerifyOTP extends AuthEvent {
   @override
   List<Object?> get props => [verificationId, otp];
 }
+
+class SkipAuth extends AuthEvent {}

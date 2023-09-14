@@ -13,7 +13,7 @@ class PhoneAuthRepositoryImpl implements PhoneAuthRepository {
   const PhoneAuthRepositoryImpl({required this.firebaseAuth});
   @override
   Future<Either<Failure, Either<FirebaseCodeResponse, AuthCredential>>> signIn(
-      String phoneNumber) async {
+      String phoneNumber, int? resendToken) async {
     final Completer<
             Either<Failure, Either<FirebaseCodeResponse, AuthCredential>>>
         authCredentialCompleter = Completer();

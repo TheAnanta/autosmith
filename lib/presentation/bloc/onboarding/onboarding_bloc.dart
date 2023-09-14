@@ -62,8 +62,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<OnSignInWithPhone>(
       (event, emit) async {
         emit(AuthLoading());
-        final result = await Injector.phoneAuthUseCase
-            .signInUser(phoneNumber: event.phoneNumber);
+        final result = await Injector.phoneAuthUseCase.signInUser(
+            phoneNumber: event.phoneNumber, resendToken: event.resendToken);
         result.fold(
           (failure) {
             emit(AuthError(error: failure.message));
@@ -106,5 +106,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         });
       },
     );
+
+    on<SkipAuth>((event, emit) async {
+      emit(AuthLoading());
+      final result = await Injector.anonymousAuthUseCase.signInAnonymous();
+      result.fold(
+        (failure) {
+          emit(AuthError(error: failure.message));
+        },
+        (_) => emit(
+          AuthUserAvailable(),
+        ),
+      );
+    });
   }
 }

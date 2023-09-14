@@ -32,6 +32,7 @@ import '../domain/usecases/google_one_tap_auth_usecase.dart';
 import 'data/repositories/phone_auth_repository.dart';
 import 'domain/repositories/password_auth_repository.dart';
 import 'domain/repositories/phone_auth_repository.dart';
+import 'domain/usecases/anonymous_auth_usecase.dart';
 import 'domain/usecases/password_auth_usecase.dart';
 import 'domain/usecases/phone_auth_usecase.dart';
 
@@ -66,6 +67,9 @@ class Injector {
       PasswordAuthRepositoryImpl(firebaseAuth: firebaseAuth);
   static PasswordAuthUseCase passwordAuthUseCase =
       PasswordAuthUseCase(passwordAuthRepository: passwordAuthRepository);
+
+  static AnonymousAuthUseCase anonymousAuthUseCase =
+      AnonymousAuthUseCase(firebaseAuth: firebaseAuth);
 
   static FirebaseFirestore firestore = FirebaseFirestore.instance;
   static FirestoreObjectModel<UserModel, User> userFirestoreObjectModel =

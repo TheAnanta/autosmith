@@ -3,6 +3,7 @@ import 'package:autosmith/presentation/bloc/onboarding/onboarding_bloc.dart';
 import 'package:autosmith/presentation/bloc/onboarding/onboarding_event.dart';
 import 'package:autosmith/presentation/bloc/onboarding/onboarding_state.dart';
 import 'package:autosmith/presentation/view/home_page.dart';
+import 'package:autosmith/presentation/view/loader.dart';
 import 'package:autosmith/presentation/view/registration_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -43,43 +44,41 @@ class _OnboardingPageState extends State<OnboardingPage> {
   @override
   Widget build(BuildContext context) {
     context.read<AuthBloc>().add(OnAppInit());
-    return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
-      if (state is AuthUserLoggedOut) {
-        return Scaffold(
-          body: OnboardingTemplate(
-            index,
-            title: data[index].title,
-            image: data[index].imagePath,
-            onNext: () {
-              if (index >= 2) {
-                Navigator.of(context).pushReplacementNamed("/login");
-              } else {
-                index++;
-                setState(() {});
-              }
-            },
-          ),
-        );
-      } else if (state is AuthLoading) {
-        return Scaffold(
-          body: const Center(
-            child: CircularProgressIndicator(),
-          ),
-        );
-      } else if (state is AuthError) {
-        return Scaffold(
-          body: Center(
-            child: Text(state.error),
-          ),
-        );
-      } else {
-        return Scaffold(
-          body: Center(
-            child: Text('State error.'),
-          ),
-        );
-      }
-    });
+    return BlocConsumer<AuthBloc, AuthState>(
+        bloc: Injector.authBloc,
+        listener: (context, state) {
+          if (state is AuthError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.error),
+              ),
+            );
+          } else if (state is AuthUserAvailable) {
+            Navigator.of(context).pushReplacementNamed("/home");
+          } else if (state is AuthNewUser) {
+            Navigator.of(context).pushReplacementNamed("/registration");
+          }
+        },
+        builder: (context, state) {
+          return LoaderScreen(
+            shouldShowLoader: state is AuthLoading,
+            child: Scaffold(
+              body: OnboardingTemplate(
+                index,
+                title: data[index].title,
+                image: data[index].imagePath,
+                onNext: () {
+                  if (index >= 2) {
+                    Navigator.of(context).pushReplacementNamed("/login");
+                  } else {
+                    index++;
+                    setState(() {});
+                  }
+                },
+              ),
+            ),
+          );
+        });
   }
 }
 

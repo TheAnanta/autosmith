@@ -13,8 +13,8 @@ class PhoneAuthUseCase {
   // bool get isLoggedIn => phoneAuthRepository.isLoggedIn;
 
   Future<Either<Failure, Either<FirebaseCodeResponse, AuthCredential>>>
-      signInUser({required String phoneNumber}) async {
-    final result = await phoneAuthRepository.signIn(phoneNumber);
+      signInUser({required String phoneNumber, int? resendToken}) async {
+    final result = await phoneAuthRepository.signIn(phoneNumber, resendToken);
     return result.fold((l) => Left(l), (r) => Right(r));
   }
 
