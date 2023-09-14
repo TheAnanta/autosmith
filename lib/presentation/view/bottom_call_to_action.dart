@@ -181,38 +181,67 @@ class _BottomCallToActionState extends State<BottomCallToAction> {
         const SizedBox(
           height: 16,
         ),
-        MaterialButton(
-          height: 48,
-          elevation: 0,
-          onPressed: () {
-            Navigator.of(context).pushNamed("/search-mechanic",
-                arguments: widget.automobileIssue);
-          },
-          color: Theme.of(context).colorScheme.primary,
-          minWidth: double.infinity,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                FeatherIcons.navigation,
-                color: Theme.of(context).colorScheme.onPrimary,
-                size: 16,
+        Row(
+          children: [
+            InkWell(
+              onTap: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (context) => Container(
+                    child:
+                        Center(child: Text('This is an empty bottom sheet.')),
+                  ),
+                );
+              },
+              child: Container(
+                child: Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.network(
+                      'https://upload.wikimedia.org/wikipedia/commons/9/97/Bajaj_Chetak_1996_2_stroke.jpg',
+                      width: 60,
+                    ),
+                  ),
+                ),
               ),
-              const SizedBox(
-                width: 24,
+            ),
+            SizedBox(
+              width: 6,
+            ),
+            Expanded(
+              child: MaterialButton(
+                height: 48,
+                elevation: 0,
+                onPressed: () {
+                  Navigator.of(context).pushNamed("/search-mechanic",
+                      arguments: widget.automobileIssue);
+                },
+                color: Theme.of(context).colorScheme.primary,
+                minWidth: double.infinity,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      FeatherIcons.navigation,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                      size: 16,
+                    ),
+                    const SizedBox(
+                      width: 24,
+                    ),
+                    Text(
+                      "Fetch a mechanic nearby",
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.onPrimary),
+                    ),
+                  ],
+                ),
               ),
-              Text(
-                "Fetch a mechanic nearby",
-                style: Theme.of(context)
-                    .textTheme
-                    .titleMedium
-                    ?.copyWith(color: Theme.of(context).colorScheme.onPrimary),
-              ),
-            ],
-          ),
+            ),
+          ],
         )
       ],
     );

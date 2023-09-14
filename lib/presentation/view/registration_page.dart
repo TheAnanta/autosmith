@@ -159,8 +159,7 @@ class VehiceDetailsPicker extends StatefulWidget {
 }
 
 class _VehiceDetailsPickerState extends State<VehiceDetailsPicker> {
-  // var cars = [];
-  // var bikes = [];
+  Map<String, dynamic> selectedVehicles = {};
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -168,12 +167,50 @@ class _VehiceDetailsPickerState extends State<VehiceDetailsPicker> {
       primary: false,
       child: Row(
         children: [
+          ...List.generate(selectedVehicles.length, (index) {
+            return Row(
+              children: [
+                DottedBorder(
+                  color: Theme.of(context).colorScheme.primary,
+                  radius: const Radius.circular(12),
+                  borderType: BorderType.RRect,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 52,
+                      horizontal: 48,
+                    ),
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(12)),
+                    child: Column(
+                      children: [
+                        Text(
+                          selectedVehicles.keys.toList()[index],
+                          style: TextStyle(fontSize: 24),
+                        ),
+                        SizedBox(
+                          height: 12,
+                        ),
+                        Text(
+                          selectedVehicles.values.toList()[index],
+                          style: TextStyle(fontSize: 16),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 12,
+                ),
+              ],
+            );
+          }),
           InkWell(
             onTap: () {
               showModalBottomSheet(
                 context: context,
                 builder: (context) {
                   var selectedBrand = '';
+                  var selectedModel = '';
                   return StatefulBuilder(builder: (context, itemState) {
                     return SingleChildScrollView(
                       child: Container(
@@ -207,25 +244,34 @@ class _VehiceDetailsPickerState extends State<VehiceDetailsPicker> {
                             SizedBox(
                               height: 12,
                             ),
-                            Visibility(
-                              visible: selectedBrand.isNotEmpty,
-                              child: DropdownMenu(
-                                label: Text('Model'),
-                                dropdownMenuEntries: cars
-                                    .singleWhere((element) =>
-                                        element.name == selectedBrand)
-                                    .variants
-                                    .map<DropdownMenuEntry>((e) =>
-                                        DropdownMenuEntry(
-                                            value: e.variant, label: e.variant))
-                                    .toList(),
-                              ),
-                            ),
+                            selectedBrand.isNotEmpty
+                                ? DropdownMenu(
+                                    onSelected: (value) {
+                                      selectedModel = value;
+                                    },
+                                    label: Text('Model'),
+                                    dropdownMenuEntries: cars
+                                        .singleWhere((element) =>
+                                            element.name == selectedBrand)
+                                        .variants
+                                        .map<DropdownMenuEntry>((e) =>
+                                            DropdownMenuEntry(
+                                                value: e.variant,
+                                                label: e.variant))
+                                        .toList(),
+                                  )
+                                : SizedBox(),
                             SizedBox(
                               height: 24,
                             ),
                             ElevatedButton(
-                                onPressed: () {}, child: Text('Add Car')),
+                                onPressed: () {
+                                  selectedVehicles[selectedBrand] =
+                                      selectedModel;
+                                  setState(() {});
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('Add Car')),
                           ],
                         ),
                       ),
@@ -284,6 +330,7 @@ class _VehiceDetailsPickerState extends State<VehiceDetailsPicker> {
                 context: context,
                 builder: (context) {
                   var selectedBrand = '';
+                  var selectedModel = '';
                   return StatefulBuilder(builder: (context, itemState) {
                     return SingleChildScrollView(
                       child: Container(
@@ -295,7 +342,7 @@ class _VehiceDetailsPickerState extends State<VehiceDetailsPicker> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Add Car',
+                              'Add Bike',
                               style: TextStyle(fontSize: 24),
                             ),
                             SizedBox(
@@ -308,6 +355,7 @@ class _VehiceDetailsPickerState extends State<VehiceDetailsPicker> {
                                 });
                               },
                               label: Text('Brand'),
+                              // initialSelection: bikes.first.name,
                               dropdownMenuEntries: bikes
                                   .map<DropdownMenuEntry>((e) =>
                                       DropdownMenuEntry(
@@ -317,25 +365,36 @@ class _VehiceDetailsPickerState extends State<VehiceDetailsPicker> {
                             SizedBox(
                               height: 12,
                             ),
-                            Visibility(
-                              visible: selectedBrand.isNotEmpty,
-                              child: DropdownMenu(
-                                label: Text('Model'),
-                                dropdownMenuEntries: bikes
-                                    .singleWhere((element) =>
-                                        element.name == selectedBrand)
-                                    .variants
-                                    .map<DropdownMenuEntry>((e) =>
-                                        DropdownMenuEntry(
-                                            value: e.variant, label: e.variant))
-                                    .toList(),
-                              ),
-                            ),
+                            selectedBrand.isNotEmpty
+                                ? DropdownMenu(
+                                    onSelected: (value) {
+                                      itemState(() {
+                                        selectedModel = value;
+                                      });
+                                    },
+                                    label: Text('Model'),
+                                    dropdownMenuEntries: bikes
+                                        .singleWhere((element) =>
+                                            element.name == selectedBrand)
+                                        .variants
+                                        .map<DropdownMenuEntry>((e) =>
+                                            DropdownMenuEntry(
+                                                value: e.variant,
+                                                label: e.variant))
+                                        .toList(),
+                                  )
+                                : SizedBox(),
                             SizedBox(
                               height: 24,
                             ),
                             ElevatedButton(
-                                onPressed: () {}, child: Text('Add Car')),
+                                onPressed: () {
+                                  selectedVehicles[selectedBrand] =
+                                      selectedModel;
+                                  setState(() {});
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('Add Bike')),
                           ],
                         ),
                       ),
