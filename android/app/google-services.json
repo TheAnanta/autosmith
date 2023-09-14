@@ -12,7 +12,28 @@
           "package_name": "in.theananta.autosmith"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "92316330429-43taec558grji0b76n4ivkld7tamqvo0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "in.theananta.autosmith",
+            "certificate_hash": "0a76401e9aa5b325d75f81cf6ae5a828de6cc332"
+          }
+        },
+        {
+          "client_id": "92316330429-j4n064h6nobdpdt049984pkm8lhc9vn0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "in.theananta.autosmith",
+            "certificate_hash": "8673fafc69ae246a849e610349c34fc4bb0a6c0c"
+          }
+        },
+        {
+          "client_id": "92316330429-p0n7crr4aee4c7dv9rgfbo07joolqbl1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBuiU--F--jNT6OLtHJKtfHySo-FrsMvmE"
@@ -20,7 +41,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "92316330429-p0n7crr4aee4c7dv9rgfbo07joolqbl1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "92316330429-7fq7kgera6u9u6n1ilk105heuncke8s5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "in.theananta.autosmith"
+              }
+            }
+          ]
         }
       }
     }
