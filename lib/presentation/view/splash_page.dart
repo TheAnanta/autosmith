@@ -38,6 +38,23 @@ class SplashPage extends StatelessWidget {
           const Spacer(
             flex: 2,
           ),
+          Text(
+            "Developed by",
+            style: GoogleFonts.urbanist(
+              textStyle: Theme.of(context).textTheme.titleMedium,
+            ),
+            textAlign: TextAlign.justify,
+          ),
+          Text(
+            "The Ananta",
+            style: GoogleFonts.urbanist(
+              textStyle: Theme.of(context).textTheme.headlineMedium,
+            ),
+            textAlign: TextAlign.justify,
+          ),
+          const SizedBox(
+            height: 24,
+          ),
         ],
       ),
     );

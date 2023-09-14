@@ -13,7 +13,7 @@ class GoogleOneTapAuthRepositoryImpl implements GoogleAuthRepository {
     try {
       final request = await GoogleOneTapSignIn.startSignIn(
           webClientId:
-              "1010379975924-uu04sdp61suebvkkvshj7vgbcu4aami2.apps.googleusercontent.com");
+              "92316330429-p0n7crr4aee4c7dv9rgfbo07joolqbl1.apps.googleusercontent.com");
       if (request == null) {
         return const Left(
             Failure(message: "Oops! Failed to retrive credentials."));
