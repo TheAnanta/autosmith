@@ -8,24 +8,32 @@ const List<AutomobileBrand> cars = [
     variants: [AutomobileVariant(variant: 'Audi R8', manufactureYear: '2003')],
   ),
   AutomobileBrand(
-    name: 'Audi',
+    name: 'Mercedes Benz',
     cover: 'https://www.freepnglogos.com/uploads/audi-logo-2.png',
-    variants: [AutomobileVariant(variant: 'Audi R8', manufactureYear: '2003')],
+    variants: [
+      AutomobileVariant(variant: 'Benz Bolwalski', manufactureYear: '2003')
+    ],
   ),
   AutomobileBrand(
-    name: 'Audi',
+    name: 'Rolls Royce',
     cover: 'https://www.freepnglogos.com/uploads/audi-logo-2.png',
-    variants: [AutomobileVariant(variant: 'Audi R8', manufactureYear: '2003')],
+    variants: [
+      AutomobileVariant(variant: 'Royce Phantom', manufactureYear: '2003')
+    ],
   ),
   AutomobileBrand(
-    name: 'Audi',
+    name: 'Ford',
     cover: 'https://www.freepnglogos.com/uploads/audi-logo-2.png',
-    variants: [AutomobileVariant(variant: 'Audi R8', manufactureYear: '2003')],
+    variants: [
+      AutomobileVariant(variant: 'Ford Mustang', manufactureYear: '2003')
+    ],
   ),
   AutomobileBrand(
-    name: 'Audi',
+    name: 'Tata',
     cover: 'https://www.freepnglogos.com/uploads/audi-logo-2.png',
-    variants: [AutomobileVariant(variant: 'Audi R8', manufactureYear: '2003')],
+    variants: [
+      AutomobileVariant(variant: 'Tata Nano', manufactureYear: '2003')
+    ],
   ),
 ];
 
@@ -39,7 +47,7 @@ const List<AutomobileBrand> bikes = [
     ],
   ),
   AutomobileBrand(
-    name: 'Royal Enfield',
+    name: 'BMW',
     cover:
         'https://m.media-amazon.com/images/I/61+gxqqO8LL._AC_UF1000,1000_QL80_.jpg',
     variants: [
@@ -47,7 +55,7 @@ const List<AutomobileBrand> bikes = [
     ],
   ),
   AutomobileBrand(
-    name: 'Royal Enfield',
+    name: 'Bajaj',
     cover:
         'https://m.media-amazon.com/images/I/61+gxqqO8LL._AC_UF1000,1000_QL80_.jpg',
     variants: [
@@ -55,7 +63,7 @@ const List<AutomobileBrand> bikes = [
     ],
   ),
   AutomobileBrand(
-    name: 'Royal Enfield',
+    name: 'Honda',
     cover:
         'https://m.media-amazon.com/images/I/61+gxqqO8LL._AC_UF1000,1000_QL80_.jpg',
     variants: [
