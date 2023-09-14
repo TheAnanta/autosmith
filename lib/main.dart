@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
           colorScheme: darkColorScheme,
           fontFamily: "Gilroy"),
-      initialRoute: "/splash",
+      initialRoute: "/home",
       routes: {
         "/splash": (context) => const SplashPage(),
         "/onboarding": (context) => const OnboardingPage(),
