@@ -17,7 +17,7 @@ import 'color_schemes.g.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-  Firebase.initializeApp();
+  await Firebase.initializeApp();
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider(
@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
           colorScheme: darkColorScheme,
           fontFamily: "Gilroy"),
-      initialRoute: "/home",
+      initialRoute: "/registration",
       routes: {
         "/splash": (context) => const SplashPage(),
         "/onboarding": (context) => const OnboardingPage(),
