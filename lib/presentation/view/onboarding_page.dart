@@ -1,3 +1,4 @@
+import 'package:autosmith/injector.dart';
 import 'package:autosmith/presentation/bloc/onboarding/onboarding_bloc.dart';
 import 'package:autosmith/presentation/bloc/onboarding/onboarding_event.dart';
 import 'package:autosmith/presentation/bloc/onboarding/onboarding_state.dart';
@@ -41,10 +42,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   @override
   Widget build(BuildContext context) {
-    context.read<OnboardingBloc>().add(OnAppInit());
-    return BlocBuilder<OnboardingBloc, OnboardingState>(
-        builder: (context, state) {
-      if (state is OnboardingUserLoggedOut) {
+    context.read<AuthBloc>().add(OnAppInit());
+    return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+      if (state is AuthUserLoggedOut) {
         return Scaffold(
           body: OnboardingTemplate(
             index,
@@ -60,21 +60,23 @@ class _OnboardingPageState extends State<OnboardingPage> {
             },
           ),
         );
-      } else if (state is OnboardingUserAvailable) {
-        return const HomePage();
-      } else if (state is OnboardingNewUser) {
-        return const RegistrationPage();
-      } else if (state is OnboardingLoading) {
-        return const Center(
-          child: CircularProgressIndicator(),
+      } else if (state is AuthLoading) {
+        return Scaffold(
+          body: const Center(
+            child: CircularProgressIndicator(),
+          ),
         );
-      } else if (state is OnboardingError) {
-        return Center(
-          child: Text(state.error),
+      } else if (state is AuthError) {
+        return Scaffold(
+          body: Center(
+            child: Text(state.error),
+          ),
         );
       } else {
-        return Center(
-          child: Text('State error.'),
+        return Scaffold(
+          body: Center(
+            child: Text('State error.'),
+          ),
         );
       }
     });

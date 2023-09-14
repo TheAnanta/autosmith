@@ -190,6 +190,7 @@ class ProfilePage extends StatelessWidget {
               child: Divider(),
             ),
             ListView.builder(
+              padding: EdgeInsets.zero,
               primary: false,
               shrinkWrap: true,
               itemBuilder: (context, index) {

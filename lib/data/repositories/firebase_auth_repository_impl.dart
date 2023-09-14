@@ -15,7 +15,7 @@ class FirebaseAuthRepositoryImpl implements FirebaseAuthRepository {
   /// - If the signIn was **successful**, a [bool] is return which states whether its the user is on the platform for the **first time**.
   @override
   Future<Either<Failure, bool>> linkWithFirebase(
-      OAuthCredential credential) async {
+      AuthCredential credential) async {
     try {
       final userCredential = await auth.signInWithCredential(credential);
       return Right(userCredential.additionalUserInfo?.isNewUser ?? true);
@@ -30,9 +30,17 @@ class FirebaseAuthRepositoryImpl implements FirebaseAuthRepository {
           return const Left(
               Failure(message: "Expired or malformed credentials."));
         case "user-disabled":
-          return const Left(Failure(message: ""));
+          return const Left(Failure(message: "User is disabled"));
         case "user-not-found":
-          return const Left(Failure(message: ""));
+          return const Left(Failure(message: "User not found"));
+        case "wrong-password":
+          return const Left(Failure(message: "The password is incorrect."));
+        case "invalid-verification-code":
+          return const Left(
+              Failure(message: "The verification code is invalid."));
+        case "invalid-verification-id":
+          return const Left(
+              Failure(message: "The verification ID is invalid."));
         default:
           return const Left(Failure(message: ""));
       }

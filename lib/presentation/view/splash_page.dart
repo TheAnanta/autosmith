@@ -1,3 +1,4 @@
+import 'package:autosmith/injector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,7 +10,10 @@ class SplashPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Future.delayed(
       const Duration(seconds: 2),
-      () => Navigator.of(context).pushReplacementNamed('/onboarding'),
+      () {
+        Injector.firebaseAuth.signOut();
+        Navigator.of(context).pushReplacementNamed('/onboarding');
+      },
     );
     return Scaffold(
       body: Column(

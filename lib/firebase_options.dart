@@ -66,6 +66,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '92316330429',
     projectId: 'autosmith',
     storageBucket: 'autosmith.appspot.com',
+    androidClientId: '92316330429-43taec558grji0b76n4ivkld7tamqvo0.apps.googleusercontent.com',
+    iosClientId: '92316330429-7fq7kgera6u9u6n1ilk105heuncke8s5.apps.googleusercontent.com',
     iosBundleId: 'in.theananta.autosmith',
   );
 
@@ -75,6 +77,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '92316330429',
     projectId: 'autosmith',
     storageBucket: 'autosmith.appspot.com',
+    androidClientId: '92316330429-43taec558grji0b76n4ivkld7tamqvo0.apps.googleusercontent.com',
+    iosClientId: '92316330429-a2ufp8rat7cf6gqb5kr02j8nopo91j3s.apps.googleusercontent.com',
     iosBundleId: 'in.theananta.autosmith.RunnerTests',
   );
 }

@@ -5,5 +5,5 @@ import '../../data/failure.dart';
 
 abstract class FirebaseAuthRepository {
   bool get isLoggedIn;
-  Future<Either<Failure, bool>> linkWithFirebase(OAuthCredential credential);
+  Future<Either<Failure, bool>> linkWithFirebase(AuthCredential credential);
 }

@@ -1,23 +1,29 @@
+import 'package:autosmith/data/utils/firebase_code_response.dart';
 import 'package:equatable/equatable.dart';
 
-abstract class OnboardingState extends Equatable {
-  const OnboardingState();
+abstract class AuthState extends Equatable {
+  const AuthState();
   @override
   List<Object?> get props => [];
 }
 
-class OnboardingLoading extends OnboardingState {}
+class AuthLoading extends AuthState {}
 
-class OnboardingUserAvailable extends OnboardingState {}
+class AuthUserAvailable extends AuthState {}
 
-class OnboardingUserLoggedOut extends OnboardingState {}
+class AuthUserLoggedOut extends AuthState {}
 
-class OnboardingError extends OnboardingState {
+class AuthError extends AuthState {
   final String error;
-  const OnboardingError({required this.error});
+  const AuthError({required this.error});
   @override
   // TODO: implement props
   List<Object?> get props => [error];
 }
 
-class OnboardingNewUser extends OnboardingState {}
+class AuthNewUser extends AuthState {}
+
+class AuthOTP extends AuthState {
+  final FirebaseCodeResponse firebaseCodeResponse;
+  const AuthOTP({required this.firebaseCodeResponse});
+}

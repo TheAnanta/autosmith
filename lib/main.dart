@@ -13,15 +13,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'color_schemes.g.dart';
+import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-  Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider(
-        create: (context) => Injector.splashPageBloc,
+        create: (context) => Injector.authBloc,
       )
     ],
     child: const MyApp(),
@@ -44,7 +48,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
           colorScheme: darkColorScheme,
           fontFamily: "Gilroy"),
-      initialRoute: "/home",
+      initialRoute: "/splash",
       routes: {
         "/splash": (context) => const SplashPage(),
         "/onboarding": (context) => const OnboardingPage(),

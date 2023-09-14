@@ -7,6 +7,7 @@ import 'package:autosmith/data/repositories/firestore_repository_impl.dart';
 import 'package:autosmith/data/repositories/get_place_repository_impl.dart';
 import 'package:autosmith/data/repositories/google_auth_repository_impl.dart';
 import 'package:autosmith/data/repositories/google_one_tap_auth_repository_impl.dart';
+import 'package:autosmith/data/repositories/password_auth_repository.dart';
 import 'package:autosmith/domain/enums/collection_enum.dart';
 import 'package:autosmith/domain/repositories/firebase_auth_repository.dart';
 import 'package:autosmith/domain/usecases/create_profile_usecase.dart';
@@ -28,6 +29,11 @@ import '../domain/usecases/get_place_usecase.dart';
 import 'package:http/http.dart' as http;
 
 import '../domain/usecases/google_one_tap_auth_usecase.dart';
+import 'data/repositories/phone_auth_repository.dart';
+import 'domain/repositories/password_auth_repository.dart';
+import 'domain/repositories/phone_auth_repository.dart';
+import 'domain/usecases/password_auth_usecase.dart';
+import 'domain/usecases/phone_auth_usecase.dart';
 
 class Injector {
   static final http.Client _client = http.Client();
@@ -51,6 +57,16 @@ class Injector {
       oAuthUseCase:
           Platform.isAndroid ? googleOneTapAuthUseCase : googleAuthUseCase);
 
+  static PhoneAuthRepository phoneAuthRepository =
+      PhoneAuthRepositoryImpl(firebaseAuth: firebaseAuth);
+  static PhoneAuthUseCase phoneAuthUseCase =
+      PhoneAuthUseCase(phoneAuthRepository: phoneAuthRepository);
+
+  static PasswordAuthRepository passwordAuthRepository =
+      PasswordAuthRepositoryImpl(firebaseAuth: firebaseAuth);
+  static PasswordAuthUseCase passwordAuthUseCase =
+      PasswordAuthUseCase(passwordAuthRepository: passwordAuthRepository);
+
   static FirebaseFirestore firestore = FirebaseFirestore.instance;
   static FirestoreObjectModel<UserModel, User> userFirestoreObjectModel =
       UserFirestoreModel();
@@ -73,6 +89,5 @@ class Injector {
   static CreateProfileUseCase createProfileUseCase = CreateProfileUseCase(
       getPlaceUseCase: getPlaceUseCase, firestoreUsecase: userFirestoreUseCase);
 
-  static OnboardingBloc splashPageBloc =
-      OnboardingBloc(firebaseAuthUseCase: firebaseAuthUseCase);
+  static AuthBloc authBloc = AuthBloc(firebaseAuthUseCase: firebaseAuthUseCase);
 }
