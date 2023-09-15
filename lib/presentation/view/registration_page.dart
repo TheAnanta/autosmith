@@ -1,6 +1,8 @@
 import 'package:autosmith/data/callbacks.dart';
 import 'package:autosmith/data/datasources/automobile_brands.dart';
 import 'package:autosmith/domain/entities/user.dart' as UserEntity;
+import 'package:autosmith/domain/enums/automobile_brand.dart';
+import 'package:autosmith/domain/enums/automobile_variants.dart';
 import 'package:autosmith/injector.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:feather_icons/feather_icons.dart';
@@ -217,7 +219,7 @@ class VehiceDetailsPicker extends StatefulWidget {
 }
 
 class _VehiceDetailsPickerState extends State<VehiceDetailsPicker> {
-  Map<String, dynamic> selectedVehicles = {};
+  List<AutomobileVariant> selectedVehicles = [];
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -226,87 +228,94 @@ class _VehiceDetailsPickerState extends State<VehiceDetailsPicker> {
       child: Row(
         children: [
           ...List.generate(selectedVehicles.length, (index) {
-            var isCar = cars
-                .where((element) =>
-                    element.name == selectedVehicles.keys.toList()[index])
-                .isNotEmpty;
-            return Row(
-              children: [
-                Container(
-                  clipBehavior: Clip.none,
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 16,
-                    horizontal: 48,
-                  ),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: isCar
-                          ? Theme.of(context).colorScheme.primary
-                          : Theme.of(context).colorScheme.tertiaryContainer),
-                  child: Stack(
-                    alignment: Alignment.center,
+            return Builder(builder: (context) {
+              var isCar = cars
+                  .where((element) => selectedVehicles[index].id == element.id)
+                  .isNotEmpty;
+              return Row(
+                children: [
+                  Container(
                     clipBehavior: Clip.none,
-                    children: [
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SizedBox(
-                            height: 54,
-                          ),
-                          Text(
-                            selectedVehicles.values.toList()[index],
-                            style: GoogleFonts.urbanist(
-                              textStyle: Theme.of(context)
-                                  .textTheme
-                                  .headlineSmall
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    color: isCar
-                                        ? Theme.of(context)
-                                            .colorScheme
-                                            .onPrimary
-                                        : Theme.of(context)
-                                            .colorScheme
-                                            .tertiary,
-                                  ),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 16,
+                      horizontal: 48,
+                    ),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: isCar
+                            ? Theme.of(context).colorScheme.primary
+                            : Theme.of(context).colorScheme.tertiaryContainer),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      clipBehavior: Clip.none,
+                      children: [
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(
+                              height: 54,
                             ),
-                          ),
-                          Text(selectedVehicles.keys.toList()[index],
+                            Text(
+                              selectedVehicles[index].variant,
                               style: GoogleFonts.urbanist(
                                 textStyle: Theme.of(context)
                                     .textTheme
-                                    .titleMedium
+                                    .headlineSmall
                                     ?.copyWith(
+                                      fontWeight: FontWeight.w600,
                                       color: isCar
                                           ? Theme.of(context)
                                               .colorScheme
                                               .onPrimary
-                                              .withOpacity(0.7)
                                           : Theme.of(context)
                                               .colorScheme
-                                              .tertiary
-                                              .withOpacity(0.7),
+                                              .tertiary,
                                     ),
-                              )),
-                        ],
-                      ),
-                      Positioned(
-                        top: -54,
-                        child: Image.network(
-                          isCar
-                              ? "https://www.pngmart.com/files/21/White-Tesla-Car-PNG-HD-Isolated.png"
-                              : "https://www.yamaha-motor-india.com/theme/v3/image/fascino125fi-new/color/Disc/YELLOW-COCKTAIL-STD.png",
-                          height: 100,
+                              ),
+                            ),
+                            Text(
+                                (isCar ? cars : bikes)
+                                    .firstWhere((element) => selectedVehicles
+                                        .map((e) => e.id)
+                                        .toList()
+                                        .contains(element.id))
+                                    .name,
+                                style: GoogleFonts.urbanist(
+                                  textStyle: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium
+                                      ?.copyWith(
+                                        color: isCar
+                                            ? Theme.of(context)
+                                                .colorScheme
+                                                .onPrimary
+                                                .withOpacity(0.7)
+                                            : Theme.of(context)
+                                                .colorScheme
+                                                .tertiary
+                                                .withOpacity(0.7),
+                                      ),
+                                )),
+                          ],
                         ),
-                      ),
-                    ],
+                        Positioned(
+                          top: -54,
+                          child: Image.network(
+                            isCar
+                                ? "https://www.pngmart.com/files/21/White-Tesla-Car-PNG-HD-Isolated.png"
+                                : "https://www.yamaha-motor-india.com/theme/v3/image/fascino125fi-new/color/Disc/YELLOW-COCKTAIL-STD.png",
+                            height: 100,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  width: 12,
-                ),
-              ],
-            );
+                  const SizedBox(
+                    width: 12,
+                  ),
+                ],
+              );
+            });
           }),
           InkWell(
             onTap: () {
@@ -409,11 +418,12 @@ class _VehiceDetailsPickerState extends State<VehiceDetailsPicker> {
   }
 
   void addCarBottomSheet() {
+    AutomobileBrand? selectedBrand;
+    AutomobileVariant? selectedModel;
+    TextEditingController yearController = TextEditingController();
     showModalBottomSheet(
       context: context,
       builder: (context) {
-        var selectedBrand = '';
-        var selectedModel = '';
         return StatefulBuilder(builder: (context, itemState) {
           return SingleChildScrollView(
             child: LayoutBuilder(builder: (context, constraints) {
@@ -456,13 +466,14 @@ class _VehiceDetailsPickerState extends State<VehiceDetailsPicker> {
                       width: constraints.maxWidth * 0.85,
                       onSelected: (value) {
                         itemState(() {
-                          selectedBrand = value;
+                          selectedBrand =
+                              cars.firstWhere((element) => element.id == value);
                         });
                       },
                       label: const Text('Brand'),
                       dropdownMenuEntries: cars
                           .map<DropdownMenuEntry>((e) =>
-                              DropdownMenuEntry(value: e.name, label: e.name))
+                              DropdownMenuEntry(value: e.id, label: e.name))
                           .toList(),
                     ),
                     const SizedBox(
@@ -470,26 +481,41 @@ class _VehiceDetailsPickerState extends State<VehiceDetailsPicker> {
                     ),
                     AnimatedSwitcher(
                       duration: Duration(milliseconds: 500),
-                      child: selectedBrand.isNotEmpty
+                      child: selectedBrand != null
                           ? DropdownMenu(
                               width: constraints.maxWidth * 0.85,
                               // enabled: selectedBrand.isNotEmpty,
                               onSelected: (value) {
-                                if (value is String) {
-                                  selectedModel = value;
-                                }
+                                selectedModel = cars
+                                    .firstWhere(
+                                        (element) => element == selectedBrand)
+                                    .variants
+                                    .firstWhere(
+                                        (variant) => variant.id == value);
                               },
                               label: const Text('Model'),
                               dropdownMenuEntries: cars
-                                  .singleWhere((element) =>
-                                      element.name == selectedBrand)
+                                  .firstWhere(
+                                      (element) => element == selectedBrand)
                                   .variants
                                   .map<DropdownMenuEntry>((e) =>
                                       DropdownMenuEntry(
-                                          value: e.variant, label: e.variant))
+                                          value: e.id, label: e.variant))
                                   .toList(),
                             )
                           : SizedBox(),
+                    ),
+                    const SizedBox(
+                      height: 24,
+                    ),
+                    TextField(
+                      controller: yearController,
+                      decoration: InputDecoration(
+                        hintText: "Year of Manufacture",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
                     ),
                     const SizedBox(
                       height: 24,
@@ -498,7 +524,12 @@ class _VehiceDetailsPickerState extends State<VehiceDetailsPicker> {
                       width: double.infinity,
                       child: FilledButton(
                           onPressed: () {
-                            selectedVehicles[selectedBrand] = selectedModel;
+                            selectedVehicles.add(cars
+                                .firstWhere(
+                                    (element) => element == selectedBrand)
+                                .variants
+                                .firstWhere(
+                                    (variant) => variant == selectedModel));
                             setState(() {});
                             Navigator.of(context).pop();
                           },
@@ -518,8 +549,9 @@ class _VehiceDetailsPickerState extends State<VehiceDetailsPicker> {
     showModalBottomSheet(
       context: context,
       builder: (context) {
-        var selectedBrand = '';
-        var selectedModel = '';
+        AutomobileBrand? selectedBrand;
+        AutomobileVariant? selectedModel;
+        TextEditingController yearController = TextEditingController();
         return StatefulBuilder(builder: (context, itemState) {
           return SingleChildScrollView(
             child: LayoutBuilder(builder: (context, constraints) {
@@ -562,38 +594,56 @@ class _VehiceDetailsPickerState extends State<VehiceDetailsPicker> {
                       width: constraints.maxWidth * 0.85,
                       onSelected: (value) {
                         itemState(() {
-                          selectedBrand = value;
+                          selectedBrand = bikes
+                              .firstWhere((element) => element.id == value);
                         });
                       },
                       label: const Text('Brand'),
                       // initialSelection: bikes.first.name,
                       dropdownMenuEntries: bikes
                           .map<DropdownMenuEntry>((e) =>
-                              DropdownMenuEntry(value: e.name, label: e.name))
+                              DropdownMenuEntry(value: e.id, label: e.name))
                           .toList(),
                     ),
                     const SizedBox(
                       height: 12,
                     ),
-                    selectedBrand.isNotEmpty
+                    selectedBrand != null
                         ? DropdownMenu(
                             width: constraints.maxWidth * 0.85,
                             onSelected: (value) {
                               itemState(() {
-                                selectedModel = value;
+                                selectedModel = bikes
+                                    .firstWhere(
+                                        (element) => element == selectedBrand)
+                                    .variants
+                                    .firstWhere(
+                                        (variant) => variant.id == value);
                               });
                             },
                             label: const Text('Model'),
                             dropdownMenuEntries: bikes
                                 .singleWhere(
-                                    (element) => element.name == selectedBrand)
+                                    (element) => element == selectedBrand)
                                 .variants
                                 .map<DropdownMenuEntry>((e) =>
                                     DropdownMenuEntry(
-                                        value: e.variant, label: e.variant))
+                                        value: e.id, label: e.variant))
                                 .toList(),
                           )
                         : const SizedBox(),
+                    const SizedBox(
+                      height: 24,
+                    ),
+                    TextField(
+                      controller: yearController,
+                      decoration: InputDecoration(
+                        hintText: "Year of Manufacture",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                    ),
                     const SizedBox(
                       height: 24,
                     ),
@@ -601,7 +651,12 @@ class _VehiceDetailsPickerState extends State<VehiceDetailsPicker> {
                       width: double.infinity,
                       child: FilledButton(
                           onPressed: () {
-                            selectedVehicles[selectedBrand] = selectedModel;
+                            selectedVehicles.add(bikes
+                                .firstWhere(
+                                    (element) => element == selectedBrand)
+                                .variants
+                                .firstWhere(
+                                    (variant) => variant == selectedModel));
                             setState(() {});
                             Navigator.of(context).pop();
                           },
