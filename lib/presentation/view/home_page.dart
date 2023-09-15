@@ -1,14 +1,10 @@
 import 'package:autosmith/data/datasources/automobile_issues.dart';
 import 'package:autosmith/domain/entities/automobile_issues.dart';
-import 'package:dartz/dartz.dart' as Dartz;
 import 'package:feather_icons/feather_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../data/failure.dart';
-import '../../domain/entities/user.dart';
 import '../../domain/enums/automobile_type.dart';
-import '../../injector.dart';
 import 'bottom_call_to_action.dart';
 
 class HomePage extends StatefulWidget {
@@ -40,28 +36,10 @@ class _HomePageState extends State<HomePage> {
                       Navigator.of(context).pushNamed("/profile");
                     },
                     child: ClipOval(
-                      child: FutureBuilder(
-                          future: Injector.userFirestoreUseCase
-                              .getData(Injector.firebaseAuth.currentUser!.uid),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState !=
-                                ConnectionState.done) {
-                              return Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            }
-                            final profileResult =
-                                snapshot.data as Dartz.Either<Failure, User>;
-                            return Image.network(
-                              profileResult.fold(
-                                (l) => "https://github.com/ManasMalla.png",
-                                (profile) =>
-                                    profile.image ??
-                                    "https://github.com/ManasMalla.png",
-                              ),
-                              width: 54,
-                            );
-                          }),
+                      child: Image.network(
+                        "https://github.com/ManasMalla.png",
+                        width: 54,
+                      ),
                     ),
                   ),
                   const SizedBox(
@@ -96,6 +74,13 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
+                  IconButton(
+                      onPressed: () {
+                        Navigator.of(context).pushNamed("/notifications");
+                      },
+                      icon: Icon(
+                        FeatherIcons.bell,
+                      ))
                 ],
               ),
               const SizedBox(

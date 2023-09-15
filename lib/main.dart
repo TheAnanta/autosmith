@@ -1,6 +1,7 @@
 import 'package:autosmith/injector.dart';
 import 'package:autosmith/presentation/view/home_page.dart';
 import 'package:autosmith/presentation/view/login_screen.dart';
+import 'package:autosmith/presentation/view/notifications_page.dart';
 import 'package:autosmith/presentation/view/onboarding_page.dart';
 import 'package:autosmith/presentation/view/otp_screen.dart';
 import 'package:autosmith/presentation/view/profile_page.dart';
@@ -48,7 +49,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
           colorScheme: darkColorScheme,
           fontFamily: "Gilroy"),
-      initialRoute: "/registration",
+      initialRoute: "/splash",
       routes: {
         "/splash": (context) => const SplashPage(),
         "/onboarding": (context) => const OnboardingPage(),
@@ -59,6 +60,7 @@ class MyApp extends StatelessWidget {
         '/search-mechanic': (context) => const SearchMechanicPage(),
         "/profile": (context) => const ProfilePage(),
         "/wallet": (context) => const WalletPage(),
+        "/notifications": (context) => const NotificationPage(),
         // '/success': (context) => const SuccessPage(),
       },
     );
