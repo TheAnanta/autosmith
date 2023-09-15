@@ -21,26 +21,9 @@ class UserFirestoreModel implements FirestoreObjectModel<UserModel, User> {
 
   @override
   UserModel fromEntity(User entity) => UserModel(
-      firstName: entity.firstName,
-      lastName: entity.lastName,
-      username: entity.username,
-      email: entity.email,
-      phone: entity.phone,
-      age: entity.age,
-      gender: entity.gender,
-      place: entity.place,
-      career: entity.career,
-      organization: entity.organization,
-      avatar: entity.avatar,
-      bio: entity.bio,
-      handles: entity.handles,
-      interests: entity.interests,
-      blogs: entity.blogs,
-      posts: entity.posts,
-      events: entity.events,
-      followers: entity.followers,
-      following: entity.following,
-      verified: entity.verified,
-      strikes: entity.strikes,
-      blacklisted: entity.blacklisted);
+        name: entity.name,
+        email: entity.email,
+        phone: entity.phone,
+        image: entity.image,
+      );
 }

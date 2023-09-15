@@ -193,13 +193,31 @@ class _BottomCallToActionState extends State<BottomCallToAction> {
                   ),
                 );
               },
-              child: Container(
-                child: Center(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Image.network(
-                      'https://upload.wikimedia.org/wikipedia/commons/9/97/Bajaj_Chetak_1996_2_stroke.jpg',
-                      width: 60,
+              child: Center(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Container(
+                    color: Colors.black,
+                    height: 48,
+                    width: 100,
+                    child: Row(
+                      children: [
+                        Spacer(),
+                        Image.network(
+                          automobileType == AutomobileType.twoWheeler
+                              ? "https://www.yamaha-motor-india.com/theme/v3/image/fascino125fi-new/color/Disc/YELLOW-COCKTAIL-STD.png"
+                              : "https://www.pngmart.com/files/21/White-Tesla-Car-PNG-HD-Isolated.png",
+                          // width: 60,
+                          height: 30,
+                          fit: BoxFit.fitHeight,
+                        ),
+                        Spacer(),
+                        Icon(
+                          Icons.arrow_drop_down_rounded,
+                          color: Colors.white,
+                          size: 36,
+                        ),
+                      ],
                     ),
                   ),
                 ),

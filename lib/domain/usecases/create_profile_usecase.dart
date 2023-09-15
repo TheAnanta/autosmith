@@ -14,29 +14,13 @@ class CreateProfileUseCase {
     required this.firestoreUsecase,
   });
   Future<Either<Failure, void>> createProfile(User firebaseUser,
-      {required String username,
-      required String gender,
-      required int pincode,
-      required String career,
-      required String organization,
+      {required String name,
+      String? email,
+      String? phone,
       required OnSuccessCallbackListener onSuccessCallbackListener}) async {
-    final cityResult = await getPlaceUseCase.getAddressFromPincode(pincode);
-    return cityResult.fold((failure) => Left(failure), (city) async {
-      UserModel userModel = UserModel(
-          firstName: firebaseUser.displayName!.split(' ').first,
-          lastName: firebaseUser.displayName!.split(' ').length > 1
-              ? firebaseUser.displayName!.split(' ').last
-              : '',
-          username: username,
-          email: firebaseUser.email!,
-          gender: gender,
-          place: city,
-          career: career,
-          organization: organization);
-
-      return await firestoreUsecase.putData(
-          userModel.toJson(), firebaseUser.uid,
-          onSuccessCallbackListener: onSuccessCallbackListener);
-    });
+    final userModel = UserModel(name: name, email: email, phone: phone);
+    return await firestoreUsecase.putData(
+        userModel.toEntity(), firebaseUser.uid,
+        onSuccessCallbackListener: onSuccessCallbackListener);
   }
 }
