@@ -10,8 +10,18 @@ class AutomobileVariant extends Equatable {
     required this.variant,
     required this.manufactureYear,
   });
-  
+
   @override
   // TODO: implement props
-  List<Object?> get props => [id,variant];
+  List<Object?> get props => [id, variant];
+
+  factory AutomobileVariant.fromJson(Map<String, dynamic> json) {
+    return AutomobileVariant(
+        id: json["id"],
+        variant: json["variant"],
+        manufactureYear: json["manufactureYear"]);
+  }
+  Map<String, dynamic> toJson() {
+    return {"id": id, "variant": variant, "manufactureYear": manufactureYear};
+  }
 }

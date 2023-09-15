@@ -4,7 +4,7 @@ import 'package:autosmith/data/failure.dart';
 
 abstract class FirestoreObjectModel<P, Q> {
   Either<Failure, P> getModelFromDocumentSnapshot(
-      DocumentSnapshot documentSnapshot);
+      DocumentSnapshot<Map<String, dynamic>> documentSnapshot);
   Map<String, dynamic> toJson(P data);
   P fromEntity(Q entity);
   Q toEntity(P model);

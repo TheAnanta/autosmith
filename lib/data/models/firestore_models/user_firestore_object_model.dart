@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:autosmith/domain/enums/automobile_variants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 
@@ -9,7 +12,7 @@ import 'firestore_object_model.dart';
 class UserFirestoreModel implements FirestoreObjectModel<UserModel, User> {
   @override
   Either<Failure, UserModel> getModelFromDocumentSnapshot(
-      DocumentSnapshot snapshot) {
+      DocumentSnapshot<Map<String, dynamic>> snapshot) {
     return Right(UserModel.fromDocumentSnapshot(snapshot));
   }
 
@@ -25,5 +28,8 @@ class UserFirestoreModel implements FirestoreObjectModel<UserModel, User> {
         email: entity.email,
         phone: entity.phone,
         image: entity.image,
+        vehicles: (entity.vehicles ?? [])
+            .map((e) => AutomobileVariant.fromJson(e))
+            .toList(),
       );
 }

@@ -23,6 +23,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final mobileController = TextEditingController();
+  List<AutomobileVariant> selectedVehicles = [];
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +145,13 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 const SizedBox(
                   height: 32,
                 ),
-                const VehiceDetailsPicker(),
+                VehiceDetailsPicker(
+                  selectedVehicles: selectedVehicles,
+                  onSelectVehicle: (vehicle) {
+                    selectedVehicles.add(vehicle);
+                    setState(() {});
+                  },
+                ),
                 // Spacer(),
                 const SizedBox(
                   height: 54,
@@ -173,6 +180,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                       name: nameController.text,
                                       email: emailController.text,
                                       phone: mobileController.text,
+                                      vehicles: selectedVehicles,
                                       onSuccessCallbackListener:
                                           OnSuccessCallbackListener(
                                               onSuccess: () {}));
@@ -210,8 +218,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
 }
 
 class VehiceDetailsPicker extends StatefulWidget {
+  final List<AutomobileVariant> selectedVehicles;
+  final Function(AutomobileVariant) onSelectVehicle;
   const VehiceDetailsPicker({
     super.key,
+    required this.selectedVehicles,
+    required this.onSelectVehicle,
   });
 
   @override
@@ -219,7 +231,6 @@ class VehiceDetailsPicker extends StatefulWidget {
 }
 
 class _VehiceDetailsPickerState extends State<VehiceDetailsPicker> {
-  List<AutomobileVariant> selectedVehicles = [];
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -227,10 +238,11 @@ class _VehiceDetailsPickerState extends State<VehiceDetailsPicker> {
       primary: false,
       child: Row(
         children: [
-          ...List.generate(selectedVehicles.length, (index) {
+          ...List.generate(widget.selectedVehicles.length, (index) {
             return Builder(builder: (context) {
               var isCar = cars
-                  .where((element) => selectedVehicles[index].id == element.id)
+                  .where((element) =>
+                      widget.selectedVehicles[index].id == element.id)
                   .isNotEmpty;
               return Row(
                 children: [
@@ -256,7 +268,7 @@ class _VehiceDetailsPickerState extends State<VehiceDetailsPicker> {
                               height: 54,
                             ),
                             Text(
-                              selectedVehicles[index].variant,
+                              widget.selectedVehicles[index].variant,
                               style: GoogleFonts.urbanist(
                                 textStyle: Theme.of(context)
                                     .textTheme
@@ -275,7 +287,8 @@ class _VehiceDetailsPickerState extends State<VehiceDetailsPicker> {
                             ),
                             Text(
                                 (isCar ? cars : bikes)
-                                    .firstWhere((element) => selectedVehicles
+                                    .firstWhere((element) => widget
+                                        .selectedVehicles
                                         .map((e) => e.id)
                                         .toList()
                                         .contains(element.id))
@@ -524,7 +537,7 @@ class _VehiceDetailsPickerState extends State<VehiceDetailsPicker> {
                       width: double.infinity,
                       child: FilledButton(
                           onPressed: () {
-                            selectedVehicles.add(cars
+                            widget.onSelectVehicle(cars
                                 .firstWhere(
                                     (element) => element == selectedBrand)
                                 .variants
@@ -651,7 +664,7 @@ class _VehiceDetailsPickerState extends State<VehiceDetailsPicker> {
                       width: double.infinity,
                       child: FilledButton(
                           onPressed: () {
-                            selectedVehicles.add(bikes
+                            widget.onSelectVehicle(bikes
                                 .firstWhere(
                                     (element) => element == selectedBrand)
                                 .variants

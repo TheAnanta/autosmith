@@ -1,10 +1,16 @@
+import 'package:autosmith/data/models/user_model.dart';
 import 'package:autosmith/domain/entities/automobile_issues.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dartz/dartz.dart' as dartz;
 import 'package:feather_icons/feather_icons.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:location/location.dart' as location_package;
-
+import '../../domain/entities/user.dart' as user;
+import '../../data/failure.dart';
 import '../../domain/enums/automobile_type.dart';
 
 class BottomCallToAction extends StatefulWidget {
@@ -187,9 +193,117 @@ class _BottomCallToActionState extends State<BottomCallToAction> {
               onTap: () {
                 showModalBottomSheet(
                   context: context,
-                  builder: (context) => Container(
-                    child:
-                        Center(child: Text('This is an empty bottom sheet.')),
+                  useRootNavigator: true,
+                  builder: (context) => StreamBuilder(
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        final userModel =
+                            UserModel.fromDocumentSnapshot(snapshot.data!);
+                        return Padding(
+                          padding: const EdgeInsets.all(24.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                "Your vehicles",
+                                style:
+                                    Theme.of(context).textTheme.headlineMedium,
+                              ),
+                              Text(
+                                  "You can choose a vehicle from below or continue with a new vehicle"),
+                              SizedBox(
+                                height: 16,
+                              ),
+                              ListView.builder(
+                                itemBuilder: (context, index) {
+                                  return index < userModel.vehicles.length
+                                      ? ListTile(
+                                          onTap: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          title: Text(
+                                            userModel.vehicles[index].variant,
+                                            style: GoogleFonts.urbanist(
+                                              textStyle: Theme.of(context)
+                                                  .textTheme
+                                                  .titleLarge,
+                                            ),
+                                          ),
+                                          leading: Image.network(
+                                            automobileType ==
+                                                    AutomobileType.twoWheeler
+                                                ? "https://www.yamaha-motor-india.com/theme/v3/image/fascino125fi-new/color/Disc/YELLOW-COCKTAIL-STD.png"
+                                                : "https://www.pngmart.com/files/21/White-Tesla-Car-PNG-HD-Isolated.png",
+                                            height: 64,
+                                            width: 64,
+                                          ),
+                                          subtitle: Text(userModel
+                                              .vehicles[index].manufactureYear),
+                                        )
+                                      : Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(16.0),
+                                              child: Row(
+                                                children: [
+                                                  Flexible(child: Divider()),
+                                                  SizedBox(
+                                                    width: 12,
+                                                  ),
+                                                  Text("or,"),
+                                                  SizedBox(
+                                                    width: 12,
+                                                  ),
+                                                  Flexible(child: Divider()),
+                                                ],
+                                              ),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Icon(Icons
+                                                      .car_rental_outlined),
+                                                  SizedBox(
+                                                    width: 16,
+                                                  ),
+                                                  Text(
+                                                      "Continue with a new vehicle"),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                },
+                                itemCount: userModel.vehicles.length + 1,
+                                shrinkWrap: true,
+                                primary: false,
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                      return Center(child: CircularProgressIndicator());
+                      // final profileResult =
+                      //     snapshot.data as dartz.Either<Failure, user.User>;
+                      // return Text(
+                      //   profileResult.fold(
+                      //     (l) => l.message,
+                      //     (r) => r.vehicles.toString(),
+                      //   ),
+                      // );
+                    },
+                    stream: FirebaseFirestore.instance
+                        .collection("users")
+                        .doc(FirebaseAuth.instance.currentUser?.uid)
+                        .snapshots(),
                   ),
                 );
               },
